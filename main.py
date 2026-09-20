@@ -40,8 +40,8 @@ def create_library():
     if request.method=="POST":
             lib_name=request.form.get("library_name")
             join_code=request.form.get("join_code")
-            username_input=request.form.get("username")
-            password_input=request.form.get("password")
+            username_input = request.args.get("username") or request.form.get("username")
+            password_input = request.args.get("password") or request.form.get("password")
             user_collection=db[lib_name]
             library_data={
                 "library_name":lib_name,
