@@ -60,7 +60,7 @@ def create_library():
                  {"$set":library_data}
             )
             return redirect(url_for('test',lib_name=lib_name))
-    return render_template("create_library.html")
+    return render_template("create_library.html",username=username_input, password=password_input)
 
 @app.route("/join_library", methods=["GET","POST"])
 def join_library():
