@@ -13,11 +13,16 @@ masschaos_collection=db.masschaos
 
 @app.route("/",methods=["GET","POST"])
 def login():
-    if request.method=="POST":
-        username_input=request.form.get("username")
-        password_input=request.form.get("password")
-        ####check if it matches the database
-        return render_template("test.html")
+    users = db["users"]
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password") 
+        user = users.find_one({"username": username, "password": password})
+        if user:
+            lib_name = user.get("library")
+            return redirect(url_for('test', lib_name=lib_name))
+        else:
+            return "Invalid credentials, try again."
     return render_template("login.html")
 
 @app.route("/signup",methods=["GET","POST"])
