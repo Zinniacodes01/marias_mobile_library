@@ -79,6 +79,12 @@
                                     <td>{{book.checked_out_by}}</td>
                                 </tr>
                                 {% endfor %}
+                                <form action="{{ url_for('add_entry', lib_name=lib_name) }}" method="POST" class="mb-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="title" placeholder="Enter book title..." required>
+                                        <button class="btn btn-success" type="submit">Add Entry</button>
+                                    </div>
+                                </form>
                             </tbody>
                         </table>
                     </div>
