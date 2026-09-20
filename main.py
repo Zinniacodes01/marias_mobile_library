@@ -22,10 +22,15 @@ def login():
 
 @app.route("/signup",methods=["GET","POST"])
 def signup():
+    users=db["users"]
     if request.method=="POST":
         username_input=request.form.get("username")
         password_input=request.form.get("password")
-        ####check if it matches the database
+        user_data={
+             "username":username_input,
+             "password":password_input
+        }
+        users.insert_one(user_data)
         return render_template("test.html")
     return render_template("signup.html")
 
@@ -50,7 +55,9 @@ def create_library():
             }
             user_collection.insert_one(library_data)
             user_collection.insert_one(admin_data)
-            users.insert_one(admin_data)
+            users.update_one(
+                 {"$set":library_data}
+            )
             return redirect(url_for('test',lib_name=lib_name))
     return render_template("create_library.html")
 
