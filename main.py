@@ -31,7 +31,7 @@ def signup():
              "password":password_input
         }
         users.insert_one(user_data)
-        return render_template("test.html")
+        return redirect(url_for('create_library',username=username_input, password=password_input))
     return render_template("signup.html")
 
 @app.route("/create_library", methods=["GET","POST"])
@@ -56,20 +56,27 @@ def create_library():
             user_collection.insert_one(library_data)
             user_collection.insert_one(admin_data)
             users.update_one(
-                 {"username":username_input},
-                 {"$set":library_data}
-            )
+             {"username": username_input},
+             {"$set": {
+                 "username": username_input,
+                 "password": password_input,
+                 "library": lib_name,
+                 "admin": True,
+                 "library_name": lib_name,
+                 "join_code": join_code
+             }},
+             upsert=True)
             return redirect(url_for('test',lib_name=lib_name))
     return render_template("create_library.html",username=username_input, password=password_input)
 
 @app.route("/join_library", methods=["GET","POST"])
 def join_library():
     users=db["users"]
+    username_input = request.args.get("username") or request.form.get("username")
+    password_input = request.args.get("password") or request.form.get("password")     
     if request.method=="POST":
             lib_name=request.form.get("library_name")
             join_code=request.form.get("join_code")
-            username_input=request.form.get("username")
-            password_input=request.form.get("password")
             user_collection=db[lib_name]
             library_data={
                 "library_name":lib_name,
