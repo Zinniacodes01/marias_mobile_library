@@ -29,7 +29,7 @@
             <div class="col-4 bg-primary">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ url_for('login') }}" method="POST">
+                        <form action="{{ url_for('login') , lib_name=lib_name}}" method="POST">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ username }}">
