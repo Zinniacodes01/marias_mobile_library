@@ -56,6 +56,7 @@ def create_library():
             user_collection.insert_one(library_data)
             user_collection.insert_one(admin_data)
             users.update_one(
+                 {"username":username_input},
                  {"$set":library_data}
             )
             return redirect(url_for('test',lib_name=lib_name))
