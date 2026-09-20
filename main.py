@@ -15,8 +15,8 @@ masschaos_collection=db.masschaos
 def login():
     users = db["users"]
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password") 
+        username = request.form.get("username").strip()
+        password = request.form.get("password").strip()
         user = users.find_one({"username": username, "password": password})
         if user:
             lib_name = user.get("library")
