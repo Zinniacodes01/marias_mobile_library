@@ -17,6 +17,11 @@ def login():
     if request.method == "POST":
         username = request.form.get("username").strip()
         password = request.form.get("password").strip()
+        username_raw = request.form.get("username")
+        password_raw = request.form.get("password")
+        
+        username = username_raw.strip() if username_raw else ""
+        password = password_raw.strip() if password_raw else ""
         user = users.find_one({"username": username, "password": password})
         if user:
             lib_name = user.get("library")
