@@ -24,7 +24,7 @@ def login():
         password = password_raw.strip() if password_raw else ""
         user = users.find_one({"username": username, "password": password})
         if user:
-            lib_name = user.get("library")
+            lib_name = user.get("library_name")
             return redirect(url_for('test', lib_name=lib_name))
         else:
             return "Invalid credentials, try again."
