@@ -82,8 +82,8 @@ def create_library():
 @app.route("/join_library", methods=["GET","POST"])
 def join_library():
     users=db["users"]
-    username_input = request.args.get("username") or request.form.get("username")
-    password_input = request.args.get("password") or request.form.get("password")     
+    username_input = request.form.get("username")
+    password_input = request.form.get("password")     
     if request.method=="POST":
             lib_name=request.form.get("library_name")
             if not lib_name:
