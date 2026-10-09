@@ -21,8 +21,8 @@
             <div class="col-5"></div>
             <h1 class="display-1 col-4 text-right">Signup</h1>
             <div class="col-3 text-end">
-                <a href="login" class="btn btn-primary">Login</a>
-                <a href="signup" class="btn btn-secondary">Signup</a>
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-secondary">Signup</a>
             </div>
         </div>
         <div class="row p-5 justify-content-center bg-secondary">
@@ -42,7 +42,7 @@
                                 <!-- <input type="hidden" for="exampleInputPassword1" name="password" value="{{ password }}"> -->
                             </div>
                             <div>
-                                <button type="submit" formaction="/join_library" class="btn btn-primary">Join aLibrary</button>
+                                <button type="submit" formaction="/join_library" class="btn btn-primary">Join a Library</button>
                                 <button type="submit" formaction="/create_library" class="btn btn-secondary">Create a Library</button> 
                             </div>
                         </form>
