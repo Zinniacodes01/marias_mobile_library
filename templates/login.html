@@ -29,15 +29,15 @@
             <div class="col-4 bg-primary">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ url_for('login', lib_name=lib_name)}}" method="POST">
+                        <form method="POST">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Username</label>
-                                <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="username"></textarea>
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="username"></input>
                                 <!-- <input type="hidden" name="Username" value="{{ username }}"> -->
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <textarea type="password" class="form-control" id="exampleInputPassword1" name="password"></textarea>
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password"></input>
                                 <!-- <input type="hidden" name="password" value="{{ password }}"> -->
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
