@@ -81,10 +81,10 @@ def create_library():
 
 @app.route("/join_library", methods=["GET","POST"])
 def join_library():
-    users=db["users"]
-    username_input = request.form.get("username")
-    password_input = request.form.get("password")     
+    users=db["users"]     
     if request.method=="POST":
+            username_input = request.form.get("username")
+            password_input = request.form.get("password")
             lib_name=request.form.get("library_name")
             if not lib_name:
                  return render_template("join_library.html",username=username_input, password=password_input)
