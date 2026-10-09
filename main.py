@@ -15,13 +15,8 @@ masschaos_collection=db.masschaos
 def login():
     users = db["users"]
     if request.method == "POST":
-        username = request.form.get("username").strip()
-        password = request.form.get("password").strip()
-        username_raw = request.form.get("username")
-        password_raw = request.form.get("password")
-        
-        username = username_raw.strip() if username_raw else ""
-        password = password_raw.strip() if password_raw else ""
+        username = request.form.get("username")
+        password = request.form.get("password")
         user = users.find_one({"username": username, "password": password})
         if user:
             lib_name = user.get("library_name")
@@ -49,8 +44,8 @@ def signup():
 @app.route("/create_library", methods=["GET","POST"])
 def create_library():
     users=db["users"]
-    username_input = request.args.get("username") or request.form.get("username")
-    password_input = request.args.get("password") or request.form.get("password")
+    username_input =request.form.get("username")
+    password_input =request.form.get("password")
     if request.method=="POST":
             lib_name=request.form.get("library_name")
             if not lib_name:
@@ -110,7 +105,7 @@ def join_library():
             return redirect(url_for('test',lib_name=lib_name))
     return render_template("join_library.html")
 
-@app.route("/library/<lib_name>")
+@app.route("/library/<lib_name>",strict_slashes=False)
 def test(lib_name):
     library_collection=db[lib_name]
     books=list(library_collection.find({"type":"book"}))
