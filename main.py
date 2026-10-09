@@ -28,7 +28,8 @@ def login():
             return redirect(url_for('test', lib_name=lib_name))
         else:
             return "Invalid credentials, try again."
-    return render_template("login.html")
+    else:
+        return render_template("login.html")
 
 @app.route("/signup",methods=["GET","POST"])
 def signup():
@@ -42,7 +43,8 @@ def signup():
         }
         users.insert_one(user_data)
         return redirect(url_for('create_library',username=username_input, password=password_input))
-    return render_template("signup.html")
+    else:
+        return render_template("signup.html")
 
 @app.route("/create_library", methods=["GET","POST"])
 def create_library():
@@ -79,7 +81,8 @@ def create_library():
              }},
              upsert=True)
             return redirect(url_for('test',lib_name=lib_name))
-    return render_template("create_library.html",username=username_input, password=password_input)
+    else:
+        return render_template("create_library.html",username=username_input, password=password_input)
 
 @app.route("/join_library", methods=["GET","POST"])
 def join_library():
