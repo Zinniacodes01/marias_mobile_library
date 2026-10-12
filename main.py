@@ -85,10 +85,9 @@ def join_library():
     if request.method=="POST":
             username_input = request.form.get("username")
             password_input = request.form.get("password")
-            lib_name=request.form.get("library_name")
-            if not lib_name:
-                 return render_template("join_library.html",username=username_input, password=password_input)
             join_code=request.form.get("join_code")
+            if not join_code:
+                 return render_template("join_library.html",username=username_input, password=password_input)
             user_collection=db[lib_name]
             library_data={
                 "library_name":lib_name,
