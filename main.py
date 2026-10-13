@@ -135,7 +135,7 @@ def add_entry(lib_name):
             "checked_out_by": checked_out_by
         })
         return redirect(url_for('test', lib_name=lib_name))
-    return render_template("add_entry.html", books=books, lib_name=lib_name)
+    return render_template("add_entry.html", lib_name=lib_name)
 
 
 
