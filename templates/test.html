@@ -81,8 +81,7 @@
                                 {% endfor %}
                                 <form method="POST" class="mb-3">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="title" placeholder="Enter book title..." required>
-                                        <button class="btn btn-success" type="submit">Add Entry</button>
+                                        <a class="btn btn-success" href="{{ url_for('add_book_page', lib_name=lib_name) }}">Add Entry</a>
                                     </div>
                                 </form>
                             </tbody>
