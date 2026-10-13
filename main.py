@@ -104,11 +104,21 @@ def join_library():
             return redirect(url_for('test',lib_name=lib_name))
     return render_template("join_library.html")
 
-@app.route("/library/<lib_name>",strict_slashes=False)
+@app.route("/library/<lib_name>", methods=["GET", "POST"])
 def test(lib_name):
-    library_collection=db[lib_name]
-    books=list(library_collection.find({"type":"book"}))
-    return render_template("test.html", lib_name=lib_name, books=books)
+    library_collection = db[lib_name]
+    if request.method == "POST":
+        title=request.form.get("title")
+        if title:
+            library_collection.insert_one({
+                "title": title,
+                "author": "Unknown",
+                "currently_reading": "No",
+                "checked_out_by": "None"
+            })
+        return redirect(url_for('test', lib_name=lib_name))
+    books=list(library_collection.find())
+    return render_template("test.html", books=books, lib_name=lib_name)
 
 
 
