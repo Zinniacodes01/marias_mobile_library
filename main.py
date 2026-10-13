@@ -120,6 +120,11 @@ def test(lib_name):
     books=list(library_collection.find())
     return render_template("test.html", books=books, lib_name=lib_name)
 
+@app.route("/library/<lib_name>/add_entry", methods=["GET", "POST"])
+def test(add_entry):
+    library_collection = db[lib_name]
+    return render_template("test.html", books=books, lib_name=lib_name)
+
 
 
 
