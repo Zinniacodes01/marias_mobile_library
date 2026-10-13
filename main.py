@@ -121,9 +121,21 @@ def test(lib_name):
     return render_template("test.html", books=books, lib_name=lib_name)
 
 @app.route("/library/<lib_name>/add_entry", methods=["GET", "POST"])
-def test(add_entry):
+def add_entry(lib_name):
     library_collection = db[lib_name]
-    return render_template("test.html", books=books, lib_name=lib_name)
+    if request.method == "POST":
+        title=request.form.get("title")
+        author=request.form.get("author")
+        currently_reading=request.form.get("currently_reading", "No")
+        checked_out_by=request.form.get("checked_out_by", "None")
+        library_collection.insert_one({
+            "title": title,
+            "author": author,
+            "currently_reading": currently_reading,
+            "checked_out_by": checked_out_by
+        })
+        return redirect(url_for('test', lib_name=lib_name))
+    return render_template("add_entry", books=books, lib_name=lib_name)
 
 
 
