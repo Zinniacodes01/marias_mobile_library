@@ -103,7 +103,7 @@ def join_library():
     return render_template("join_library.html")
 
 @app.route("/library/<lib_name>/<username>", methods=["GET", "POST"])
-def test(lib_name):
+def test(lib_name,username):
     library_collection = db[lib_name]
     if request.method == "POST":
         title = request.form.get("title")
