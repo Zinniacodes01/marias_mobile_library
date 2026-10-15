@@ -19,7 +19,7 @@
     <nav class="navbar navbar-expand-lg" style="background-color: green;">
         <nav class="navbar">
             <div class="container">
-                <a class="navbar-brand" href="{{ url_for('login') }}">
+                <a class="navbar-brand" href="{{ url_for('login',lib_name=lib_name, username=username) }}">
                     <img src="{{ url_for('static', filename='images/book1.jpg') }}" alt="Bootstrap" width="50"
                         height="45" class="rounded-circle">
                 </a>
@@ -34,7 +34,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Link</a>
+                        <a class="nav-link" href="{{ url_for('login',lib_name=lib_name, username=username) }}">Link</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
@@ -59,10 +59,10 @@
             <div class="col-md-8">
                 <div class="mb-3 row">
                     <div class="col-auto">
-                        <a class="btn btn-success" href="{{ url_for('add_entry', lib_name=lib_name) }}">Add Entry</a>
+                        <a class="btn btn-success" href="{{ url_for('add_entry',lib_name=lib_name, username=username) }}">Add Entry</a>
                     </div>
                     <div class="col-auto">
-                        <a class="btn btn-success" href="{{ url_for('place_hold', lib_name=lib_name) }}">Place Hold</a>
+                        <a class="btn btn-success" href="{{ url_for('place_hold',lib_name=lib_name, username=username) }}">Place Hold</a>
                     </div>
                 </div>
                 <div class="card shadow rounded-4 overflow-hidden border-0"
