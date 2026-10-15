@@ -134,6 +134,10 @@ def add_entry(lib_name):
         })
         return redirect(url_for('test', lib_name=lib_name))
     return render_template("add_entry.html", lib_name=lib_name)
+@app.route("/library/<lib_name>/place_hold", methods=["GET", "POST"])
+def place_hold(lib_name):
+    library_collection = db[lib_name]
+    return render_template("place_hold.html", lib_name=lib_name)
 
 
 
