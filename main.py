@@ -122,7 +122,7 @@ def test(lib_name,username):
     return render_template("test.html", books=books, lib_name=lib_name, username=username)
 
 @app.route("/library/<lib_name>/<username>/add_entry", methods=["GET", "POST"])
-def add_entry(lib_name):
+def add_entry(lib_name,username):
     library_collection = db[lib_name]
     if request.method == "POST":
         title=request.form.get("title")
@@ -137,12 +137,27 @@ def add_entry(lib_name):
             "checked_out_by": checked_out_by,
             "return_to":username
         })
-        return redirect(url_for('test', lib_name=lib_name))
-    return render_template("add_entry.html", lib_name=lib_name)
-@app.route("/library/<lib_name>/place_hold", methods=["GET", "POST"])
-def place_hold(lib_name):
+        return redirect(url_for('test', lib_name=lib_name,username=username))
+    return render_template("add_entry.html", lib_name=lib_name,username=username)
+
+@app.route("/library/<lib_name>/<username>/place_hold", methods=["GET", "POST"])
+def place_hold(lib_name,username):
     library_collection = db[lib_name]
-    return render_template("place_hold.html", lib_name=lib_name)
+    if request.method == "POST":
+        title=request.form.get("title")
+        author=request.form.get("author")
+        username=request.form.get("username")
+        currently_reading=request.form.get("currently_reading", "No")
+        checked_out_by=request.form.get("checked_out_by", "None")
+        library_collection.insert_one({
+            "title": title,
+            "author": author,
+            "currently_reading": currently_reading,
+            "checked_out_by": username
+        })
+        return redirect(url_for('test', lib_name=lib_name,username=username))
+    return render_template("add_entry.html", lib_name=lib_name,username=username)
+
 
 
 
