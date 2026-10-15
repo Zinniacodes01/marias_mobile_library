@@ -18,7 +18,7 @@ def login():
         user = users.find_one({"username": username, "password": password})
         if user:
             lib_name = user.get("library_name")
-            return redirect(url_for('test', lib_name=lib_name))
+            return redirect(url_for('test', lib_name=lib_name, username=username))
         else:
             return "Invalid credentials, try again."
     else:
@@ -102,7 +102,7 @@ def join_library():
             return redirect(url_for('test',lib_name=lib_name))
     return render_template("join_library.html")
 
-@app.route("/library/<lib_name>", methods=["GET", "POST"])
+@app.route("/library/<lib_name>/<username>", methods=["GET", "POST"])
 def test(lib_name):
     library_collection = db[lib_name]
     if request.method == "POST":
@@ -121,7 +121,7 @@ def test(lib_name):
     books = list(library_collection.find({"title": {"$exists": True}}))
     return render_template("test.html", books=books, lib_name=lib_name)
 
-@app.route("/library/<lib_name>/add_entry", methods=["GET", "POST"])
+@app.route("/library/<lib_name>/<username>/add_entry", methods=["GET", "POST"])
 def add_entry(lib_name):
     library_collection = db[lib_name]
     if request.method == "POST":
