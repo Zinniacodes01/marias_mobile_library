@@ -106,16 +106,17 @@ def join_library():
 def test(lib_name):
     library_collection = db[lib_name]
     if request.method == "POST":
-        title=request.form.get("title")
+        title = request.form.get("title")
+        author = request.form.get("author", "Unknown") # grab author if submitted
         if title:
             library_collection.insert_one({
                 "title": title,
-                "author": "Unknown",
+                "author": author,
                 "currently_reading": "No",
                 "checked_out_by": "None"
             })
         return redirect(url_for('test', lib_name=lib_name))
-    books=list(library_collection.find())
+    books = list(library_collection.find({"title": {"$exists": True}}))
     return render_template("test.html", books=books, lib_name=lib_name)
 
 @app.route("/library/<lib_name>/add_entry", methods=["GET", "POST"])
