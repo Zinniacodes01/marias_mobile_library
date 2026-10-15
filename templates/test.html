@@ -57,14 +57,12 @@
     <div class="container-fluid justify-content-center">
         <div class="row  justify-content-center">
             <div class="col-md-8">
-                <div method="POST" class="mb-3 row">
-                    <div class="input-group col-6">
-                        <a class="btn btn-success" href="{{ url_for('add_entry', lib_name=lib_name) }}">Add
-                            Entry</a>
+                <div class="mb-3 row">
+                    <div class="col-auto">
+                        <a class="btn btn-success" href="{{ url_for('add_entry', lib_name=lib_name) }}">Add Entry</a>
                     </div>
-                    <div class="input-group col-6">
-                        <a class="btn btn-success" href="{{ url_for('place_hold', lib_name=lib_name) }}">Place
-                            Hold</a>
+                    <div class="col-auto">
+                        <a class="btn btn-success" href="{{ url_for('place_hold', lib_name=lib_name) }}">Place Hold</a>
                     </div>
                 </div>
                 <div class="card shadow rounded-4 overflow-hidden border-0"
