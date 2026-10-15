@@ -149,12 +149,16 @@ def place_hold(lib_name,username):
         username=request.form.get("username")
         currently_reading=request.form.get("currently_reading", "No")
         checked_out_by=request.form.get("checked_out_by", "None")
-        library_collection.insert_one({
-            "title": title,
-            "author": author,
-            "currently_reading": currently_reading,
-            "checked_out_by": username
-        })
+        library_collection.update_one(
+            {"title": title},
+            {
+                "$set": {
+                    "currently_reading": "Yes",
+                    "checked_out_by": username,
+                    "return_to": username
+                }
+            }
+        )
         return redirect(url_for('test', lib_name=lib_name,username=username))
     return render_template("add_entry.html", lib_name=lib_name,username=username)
 
