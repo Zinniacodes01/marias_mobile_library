@@ -113,7 +113,8 @@ def test(lib_name):
                 "title": title,
                 "author": author,
                 "currently_reading": "No",
-                "checked_out_by": "None"
+                "checked_out_by": "None",
+                "return_to":username
             })
         return redirect(url_for('test', lib_name=lib_name))
     books = list(library_collection.find({"title": {"$exists": True}}))
