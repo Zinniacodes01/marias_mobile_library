@@ -127,13 +127,15 @@ def add_entry(lib_name):
     if request.method == "POST":
         title=request.form.get("title")
         author=request.form.get("author")
+        username=request.form.get("username")
         currently_reading=request.form.get("currently_reading", "No")
         checked_out_by=request.form.get("checked_out_by", "None")
         library_collection.insert_one({
             "title": title,
             "author": author,
             "currently_reading": currently_reading,
-            "checked_out_by": checked_out_by
+            "checked_out_by": checked_out_by,
+            "return_to":username
         })
         return redirect(url_for('test', lib_name=lib_name))
     return render_template("add_entry.html", lib_name=lib_name)
