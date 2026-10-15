@@ -119,7 +119,7 @@ def test(lib_name,username):
             })
         return redirect(url_for('test', lib_name=lib_name))
     books = list(library_collection.find({"title": {"$exists": True}}))
-    return render_template("test.html", books=books, lib_name=lib_name)
+    return render_template("test.html", books=books, lib_name=lib_name, username=username)
 
 @app.route("/library/<lib_name>/<username>/add_entry", methods=["GET", "POST"])
 def add_entry(lib_name):
