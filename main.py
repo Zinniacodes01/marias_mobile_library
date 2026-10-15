@@ -1,9 +1,9 @@
+import os
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from flask import Flask, render_template, request, redirect, url_for
 app=Flask(__name__)
-uri = "mongodb+srv://awesomeanikale185_db_user:gdqJ0SjDDm9ZoHpJ@cluster0.3jl0dql.mongodb.net/?appName=Cluster0"
-
+uri = os.getenv("MONGO_URI")
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 ## basic code end
