@@ -8,8 +8,6 @@ uri = os.getenv("MONGO_URI")
 client = MongoClient(uri, server_api=ServerApi('1'))
 ## basic code end
 db=client["Libraries"]
-masschaos_collection=db.masschaos
-
 
 @app.route("/",methods=["GET","POST"])
 def login():
