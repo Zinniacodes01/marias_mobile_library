@@ -107,6 +107,7 @@ def test(lib_name):
     library_collection = db[lib_name]
     if request.method == "POST":
         title = request.form.get("title")
+        username = request.form.get("username")
         author = request.form.get("author", "Unknown") # grab author if submitted
         if title:
             library_collection.insert_one({
