@@ -1,0 +1,7 @@
+.doodle-background {
+    background-color: green;
+    background-image: url('images/whatsapp-doodles.png');
+    background-repeat: repeat;
+    background-size: 180px;
+    background-blend-mode: overlay;
+}
