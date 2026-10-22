@@ -169,27 +169,27 @@ def add_entry(lib_name,username):
     return render_template("add_entry.html", lib_name=lib_name,username=username)
 
 @app.route("/library/<lib_name>/<username>/place_hold", methods=["GET", "POST"])
-def place_hold(lib_name,username):
+def place_hold(lib_name, username):
     library_collection = db[lib_name]
     if request.method == "POST":
-        title=request.form.get("title")
-        author=request.form.get("author")
-        username=request.form.get("username")
-        currently_reading=request.form.get("currently_reading", "No")
-        checked_out_by=request.form.get("checked_out_by", "None")
-        library_collection.update_one(
-            {"title": title},
-            {
-                "$set": {
-                    "currently_reading": "Yes",
-                    "checked_out_by": username,
-                    "return_to": username
+        title = request.form.get("title")
+        username = request.form.get("username", username)
+        
+        if title:
+            clean_title = title.strip()
+            library_collection.update_one(
+                {"title": {"$regex": f"^{clean_title}$", "$options": "i"}},
+                {
+                    "$set": {
+                        "currently_reading": "Yes",
+                        "on_hold_by": username,
+                        "checked_out_by": username,
+                        "return_to": username
+                    }
                 }
-            }
-        )
-        return redirect(url_for('test', lib_name=lib_name,username=username))
-    return render_template("add_entry.html", lib_name=lib_name,username=username)
-
+            )
+        return redirect(url_for('test', lib_name=lib_name, username=username))
+    return render_template("place_hold.html", lib_name=lib_name, username=username)
 
 
 
