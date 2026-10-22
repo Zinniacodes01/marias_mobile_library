@@ -83,29 +83,33 @@ def create_library():
 
 @app.route("/join_library", methods=["GET","POST"])
 def join_library():
-    users=db["users"]     
-    if request.method=="POST":
-            username_input = request.form.get("username")
-            password_input = request.form.get("password")
-            join_code=request.form.get("join_code")
-            if not join_code:
-                 return render_template("join_library.html",username=username_input, password=password_input)
-            user_collection=db[lib_name]
-            library_data={
-                "library_name":lib_name,
-                "join_code":join_code
-            }
-            user_data={
-                 "username":username_input,
-                 "password":password_input,
-                 "admin":False
-            }
-            user_collection.insert_one(library_data)
-            user_collection.insert_one(user_data)
-            users.insert_one(user_data)
-            return redirect(url_for('test',lib_name=lib_name))
+    users = db["users"]      
+    if request.method == "POST":
+        username_input = request.form.get("username")
+        password_input = request.form.get("password")
+        join_code = request.form.get("join_code")
+        if not join_code:
+             return render_template("join_library.html", username=username_input, password=password_input)
+        lib_doc = db["libraries"].find_one({"join_code": join_code})
+        if not lib_doc:
+            return "Invalid Join Code! Try again."
+        lib_name = lib_doc["library_name"]
+        user_collection = db[lib_name]
+        user_data = {
+             "username": username_input,
+             "password": password_input,
+             "admin": False,
+             "library_name": lib_name
+        }
+        user_collection.insert_one(user_data)
+        users.update_one(
+            {"username": username_input},
+            {"$set": user_data},
+            upsert=True
+        )
+        return redirect(url_for('test', lib_name=lib_name, username=username_input))
     return render_template("join_library.html")
-
+    
 @app.route("/library/<lib_name>/<username>", methods=["GET", "POST"])
 def test(lib_name,username):
     library_collection = db[lib_name]
