@@ -87,7 +87,7 @@ def join_library():
     if request.method == "POST":
         username_input = request.form.get("username")
         password_input = request.form.get("password")
-        join_code = request.form.get("join_code")
+        join_code = request.form.get("join_code").strip()
         if not join_code:
              return render_template("join_library.html", username=username_input, password=password_input)
         lib_doc = db["libraries"].find_one({"join_code": join_code})
