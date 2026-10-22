@@ -24,20 +24,24 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route("/signup",methods=["GET","POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
-    users=db["users"]
-    if request.method=="POST":
-        username_input=request.form.get("username")
-        password_input=request.form.get("password")
-        user_data={
-             "username":username_input,
-             "password":password_input
-        }
-        users.insert_one(user_data)
-        return redirect(url_for('create_library',username=username_input, password=password_input))
-    else:
-        return render_template("signup.html")
+    users = db["users"]
+    if request.method == "POST":
+        username_input = request.form.get("username")
+        password_input = request.form.get("password")
+        join_code = request.form.get("join_code")
+        if join_code:
+            lib_doc = db["libraries"].find_one({"join_code": join_code})
+            if not lib_doc:
+                return "invalid join code"
+            lib_name = lib_doc["library_name"]
+            users.insert_one({"username": username_input, "password": password_input, "library_name": lib_name, "admin": False})
+            return redirect(url_for('test', lib_name=lib_name, username=username_input))
+        users.insert_one({"username": username_input, "password": password_input})
+        return redirect(url_for('create_library', username=username_input, password=password_input))
+        
+    return render_template("signup.html")
 
 @app.route("/create_library", methods=["GET","POST"])
 def create_library():
