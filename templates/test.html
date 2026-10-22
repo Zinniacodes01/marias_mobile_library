@@ -76,6 +76,7 @@
                                     <th scope="col">Author</th>
                                     <th scope="col">Currently Reading</th>
                                     <th scope="col">Checked Out By</th>
+                                    <th scope="col">On Hold By</th>
                                     <th scope="col">Return To</th>
                                 </tr>
                             </thead>
@@ -88,6 +89,7 @@
                                     <td>{{book.currently_reading}}</td>
                                     <td>{{book.checked_out_by}}</td>
                                     <td>{{book.return_to}}</td>
+                                    <td>{{book.on_hold_by}}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
