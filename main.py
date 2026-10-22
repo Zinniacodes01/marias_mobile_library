@@ -177,6 +177,27 @@ def place_hold(lib_name, username):
             )
         return redirect(url_for('test', lib_name=lib_name, username=username))
     return render_template("place_hold.html", lib_name=lib_name, username=username)
+from bson.ObjectId import ObjectId
+
+@app.route("/library/<lib_name>/<username>/update_checkout/<book_id>", methods=["GET", "POST"])
+def update_checkout(lib_name, username, book_id):
+    library_collection = db[lib_name]
+    if request.method == "POST":
+        new_user = request.form.get("checked_out_by")
+        if new_user:
+            library_collection.update_one(
+                {"_id": ObjectId(book_id)},
+                {
+                    "$set": {
+                        "checked_out_by": new_user,
+                        "currently_reading": "Yes" if new_user.lower() != "none" else "No",
+                        "return_to": new_user
+                    }
+                }
+            )
+        return redirect(url_for('test', lib_name=lib_name, username=username))
+    book = library_collection.find_one({"_id": ObjectId(book_id)})
+    return render_template("update_checkout.html", book=book, lib_name=lib_name, username=username)
 
 
 
