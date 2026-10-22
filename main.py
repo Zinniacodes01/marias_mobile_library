@@ -100,18 +100,12 @@ def join_library():
         username_input = request.form.get("username")
         password_input = request.form.get("password")
         join_code_input = request.form.get("join_code")
-        
-        # 🛑 If they just clicked over from signup, join_code won't exist yet!
-        # Grab their username/password and render the join page with hidden fields.
         if not join_code_input:
             return render_template("join_library.html", username=username_input, password=password_input)
-            
-        # Once they type the join code and submit the join page:
         join_code = join_code_input.strip()
         lib_doc = db["libraries"].find_one({"join_code": {"$regex": f"^{join_code}$", "$options": "i"}})
         if not lib_doc:
-            return "Invalid Join Code! Go back and try again."
-            
+            return "Invalid Join Code! Go back and try again."   
         lib_name = lib_doc["library_name"]
         user_collection = db[lib_name]
         user_data = {
@@ -127,7 +121,6 @@ def join_library():
             upsert=True
         )
         return redirect(url_for('test', lib_name=lib_name, username=username_input))
-        
     return render_template("join_library.html")
     
 @app.route("/library/<lib_name>/<username>", methods=["GET", "POST"])
@@ -173,23 +166,22 @@ def place_hold(lib_name, username):
     library_collection = db[lib_name]
     if request.method == "POST":
         title = request.form.get("title")
-        username = request.form.get("username", username)
-        
+        username = request.form.get("username", username)      
         if title:
             clean_title = title.strip()
-            
-            # 🎯 Only update the hold field without hijacking the current checkout!
             library_collection.update_one(
                 {"title": {"$regex": f"^{clean_title}$", "$options": "i"}},
                 {
                     "$set": {
-                        "on_hold_by": username
+                        "currently_reading": "No",
+                        "checked_out_by": "None",
+                        "on_hold_by": username,
+                        "return_to": username
                     }
                 }
             )
         return redirect(url_for('test', lib_name=lib_name, username=username))
-    return render_template("add_entry.html", lib_name=lib_name, username=username)
-
+    return render_template("place_hold.html", lib_name=lib_name, username=username)
 
 
 
