@@ -3,12 +3,9 @@ body {
     height: 100%;
     font-family: "Indie Flower", cursive !important;
 }
-/* Clean, beautiful solid blue for headers */
 .header {
-    background-color: #2980b9 !important;
+    background-color: #2980b9;
 }
-
-/* Lush green background with the doodle overlay pattern */
 .doodle-green-background {
     background-color: #27ae60;
     background-image: url('/static/images/whatsapp-doodles.png');
