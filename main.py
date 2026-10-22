@@ -198,6 +198,39 @@ def update_checkout(lib_name, username, book_id):
     book = library_collection.find_one({"_id": ObjectId(book_id)})
     return render_template("update_checkout.html", book=book, lib_name=lib_name, username=username)
 
+@app.route("/library/<lib_name>/<username>/update_currently_reading/<book_id>", methods=["GET", "POST"])
+def update_currently_reading(lib_name, username, book_id):
+    library_collection = db[lib_name]
+    if request.method == "POST":
+        new_reader = request.form.get("currently_reading")
+        if new_reader:
+            library_collection.update_one(
+                {"_id": ObjectId(book_id)},
+                {"$set": {"currently_reading": new_reader}}
+            )
+        return redirect(url_for('test', lib_name=lib_name, username=username))
+    book = library_collection.find_one({"_id": ObjectId(book_id)})
+    return render_template("update_currently_reading.html", book=book, lib_name=lib_name, username=username)
+
+@app.route("/library/<lib_name>/<username>/promote_hold/<book_id>", methods=["POST"])
+def promote_hold(lib_name, username, book_id):
+    library_collection = db[lib_name]
+    book = library_collection.find_one({"_id": ObjectId(book_id)})
+    
+    if book and book.get("on_hold_by") and book.get("on_hold_by") != "None":
+        next_borrower = book.get("on_hold_by")
+        library_collection.update_one(
+            {"_id": ObjectId(book_id)},
+            {
+                "$set": {
+                    "checked_out_by": next_borrower,
+                    "return_to": next_borrower,
+                    "on_hold_by": "None"
+                }
+            }
+        )
+    return redirect(url_for('test', lib_name=lib_name, username=username))
+
 
 
 
