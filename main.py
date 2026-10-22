@@ -88,7 +88,10 @@ def join_library():
     if request.method == "POST":
         username_input = request.form.get("username")
         password_input = request.form.get("password")
-        join_code = request.form.get("join_code").strip()
+        join_code_input = request.form.get("join_code")
+        if not join_code_input:
+            return "Join code is required! Go back and try again."
+        join_code = join_code_input.strip()
         lib_doc = db["libraries"].find_one({"join_code": {"$regex": f"^{join_code}$", "$options": "i"}})
         if not lib_doc:
             return "Invalid Join Code! Go back and try again."
