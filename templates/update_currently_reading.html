@@ -1,1 +1,25 @@
-
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Update Current Reader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 card bg-secondary shadow p-4">
+                <h2>Update Reader for "{{ book.title }}"</h2>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Currently Reading By</label>
+                        <input type="text" class="form-control" name="currently_reading" value="{{ book.currently_reading }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Update Reader</button>
+                    <a href="{{ url_for('test', lib_name=lib_name, username=username) }}" class="btn btn-outline-light">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
