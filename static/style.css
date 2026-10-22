@@ -1,3 +1,7 @@
+html,
+body {
+    height: 100%;
+}
 .doodle-background {
     background-color: green;
     background-image: url('images/whatsapp-doodles.png');
