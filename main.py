@@ -178,8 +178,6 @@ def place_hold(lib_name, username):
             )
         return redirect(url_for('test', lib_name=lib_name, username=username))
     return render_template("place_hold.html", lib_name=lib_name, username=username)
-from bson.ObjectId import ObjectId
-
 @app.route("/library/<lib_name>/<username>/update_checkout/<book_id>", methods=["GET", "POST"])
 def update_checkout(lib_name, username, book_id):
     library_collection = db[lib_name]
