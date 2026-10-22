@@ -3,10 +3,10 @@ body {
     height: 100%;
     font-family: "Indie Flower", cursive !important;
 }
-.header {
+.blue-header {
     background-color: #2980b9;
 }
-.doodle-green-background {
+.doodle-background {
     background-color: #27ae60;
     background-image: url('/static/images/whatsapp-doodles.png');
     background-repeat: repeat;
