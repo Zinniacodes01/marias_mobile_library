@@ -45,7 +45,6 @@ def signup():
     return render_template("signup.html")
 
 @app.route("/create_library", methods=["GET","POST"])
-@app.route("/create_library", methods=["GET","POST"])
 def create_library():
     users = db["users"]
     username_input = request.form.get("username")
@@ -55,16 +54,12 @@ def create_library():
         lib_name = request.form.get("library_name")
         if not lib_name:
              return render_template("create_library.html", username=username_input, password=password_input)
-             
         join_code = request.form.get("join_code")
         user_collection = db[lib_name]
-        
-        # 🌟 ADD THIS LINE: Save the join code to the master 'libraries' collection!
         db["libraries"].insert_one({
             "library_name": lib_name,
             "join_code": join_code
         })
-
         library_data = {
             "library_name": lib_name,
             "join_code": join_code
