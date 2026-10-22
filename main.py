@@ -177,20 +177,18 @@ def place_hold(lib_name, username):
         
         if title:
             clean_title = title.strip()
+            
+            # 🎯 Only update the hold field without hijacking the current checkout!
             library_collection.update_one(
                 {"title": {"$regex": f"^{clean_title}$", "$options": "i"}},
                 {
                     "$set": {
-                        "currently_reading": "Yes",
-                        "on_hold_by": username,
-                        "checked_out_by": username,
-                        "return_to": username
+                        "on_hold_by": username
                     }
                 }
             )
         return redirect(url_for('test', lib_name=lib_name, username=username))
-    return render_template("place_hold.html", lib_name=lib_name, username=username)
-
+    return render_template("add_entry.html", lib_name=lib_name, username=username)
 
 
 
