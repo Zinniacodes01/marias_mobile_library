@@ -2,8 +2,8 @@ html,
 body {
     height: 100%;
     font-family: "Indie Flower", cursive !important;
+    color:white
 }
-/* Rich emerald green background with doodle overlay */
 .doodlebackground {
     background-color: #0b6623 !important; /* A much richer, deeper green */
     background-image: url('/static/images/whatsapp_doodles.png');
@@ -12,7 +12,6 @@ body {
     background-blend-mode: overlay;
 }
 
-/* Rich, beautiful deep blue for the header */
 .blue-header {
-    background-color: #1b4f72 !important; /* A clean, rich royal/navy blue */
+    background-color: #1b4f72 !important;
 }
