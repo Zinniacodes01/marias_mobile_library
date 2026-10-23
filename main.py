@@ -1,17 +1,19 @@
 import os
 import re
+from datetime import datetime
 from bson import ObjectId
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from flask import Flask, render_template, request, redirect, url_for
-app=Flask(__name__)
+
+app = Flask(__name__)
 uri = os.getenv("MONGO_URI")
+
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
-## basic code end
-db=client["Libraries"]
+db = client["Libraries"]
 
-@app.route("/",methods=["GET","POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     users = db["users"]
     if request.method == "POST":
@@ -45,7 +47,7 @@ def signup():
         
     return render_template("signup.html")
 
-@app.route("/create_library", methods=["GET","POST"])
+@app.route("/create_library", methods=["GET", "POST"])
 def create_library():
     users = db["users"]
     username_input = request.form.get("username")
@@ -85,13 +87,13 @@ def create_library():
            }},
            upsert=True
         )
-        return redirect(url_for('test', lib_name=lib_name))
+        return redirect(url_for('test', lib_name=lib_name, username=username_input))
     else:
         return render_template("create_library.html", username=username_input, password=password_input)
-        
-@app.route("/join_library", methods=["GET","POST"])
+
+@app.route("/join_library", methods=["GET", "POST"])
 def join_library():
-    users = db["users"]      
+    users = db["users"]       
     if request.method == "POST":
         username_input = request.form.get("username")
         password_input = request.form.get("password")
@@ -101,7 +103,7 @@ def join_library():
         join_code = join_code_input.strip()
         lib_doc = db["libraries"].find_one({"join_code": {"$regex": f"^{join_code}$", "$options": "i"}})
         if not lib_doc:
-            return "Invalid Join Code! Go back and try again."   
+            return "Invalid Join Code! Go back and try again."    
         lib_name = lib_doc["library_name"]
         user_collection = db[lib_name]
         user_data = {
@@ -118,66 +120,84 @@ def join_library():
         )
         return redirect(url_for('test', lib_name=lib_name, username=username_input))
     return render_template("join_library.html")
-    
+
 @app.route("/library/<lib_name>/<username>", methods=["GET", "POST"])
-def test(lib_name,username):
+def test(lib_name, username):
     library_collection = db[lib_name]
     if request.method == "POST":
         title = request.form.get("title")
-        username = request.form.get("username","Unknown")
-        author = request.form.get("author", "Unknown") # grab author if submitted
+        author = request.form.get("author", "Unknown")
         if title:
             library_collection.insert_one({
                 "title": title,
                 "author": author,
                 "currently_reading": "No",
                 "checked_out_by": "None",
-                "return_to":username
+                "on_hold_by": "None",
+                "return_to": username,
+                "due_date": None
             })
-        return redirect(url_for('test', lib_name=lib_name))
-    books = list(library_collection.find({"title": {"$exists": True}}))
+        return redirect(url_for('test', lib_name=lib_name, username=username))
+    
+    # Fetch books and calculate late fees dynamically ($1 every 2 days late)
+    books_cursor = library_collection.find({"title": {"$exists": True}})
+    books = []
+    now = datetime.now()
+
+    for book in books_cursor:
+        due_date_str = book.get("due_date")
+        late_fee = 0
+        if due_date_str:
+            try:
+                due_date = datetime.strptime(str(due_date_str), "%Y-%m-%d")
+                if now > due_date:
+                    days_late = (now - due_date).days
+                    late_fee = (days_late // 2) * 1
+            except ValueError:
+                pass
+        book["calculated_late_fee"] = late_fee
+        books.append(book)
+
     return render_template("test.html", books=books, lib_name=lib_name, username=username)
 
 @app.route("/library/<lib_name>/<username>/add_entry", methods=["GET", "POST"])
-def add_entry(lib_name,username):
+def add_entry(lib_name, username):
     library_collection = db[lib_name]
     if request.method == "POST":
-        title=request.form.get("title")
-        author=request.form.get("author")
-        username=request.form.get("username")
-        currently_reading=request.form.get("currently_reading", "No")
-        checked_out_by=request.form.get("checked_out_by", "None")
+        title = request.form.get("title")
+        author = request.form.get("author")
+        currently_reading = request.form.get("currently_reading", "No")
+        checked_out_by = request.form.get("checked_out_by", "None")
+        due_date = request.form.get("due_date", None)
         library_collection.insert_one({
             "title": title,
             "author": author,
             "currently_reading": currently_reading,
             "checked_out_by": checked_out_by,
-            "return_to":username
+            "on_hold_by": "None",
+            "return_to": username,
+            "due_date": due_date
         })
-        return redirect(url_for('test', lib_name=lib_name,username=username))
-    return render_template("add_entry.html", lib_name=lib_name,username=username)
+        return redirect(url_for('test', lib_name=lib_name, username=username))
+    return render_template("add_entry.html", lib_name=lib_name, username=username)
 
 @app.route("/library/<lib_name>/<username>/place_hold", methods=["GET", "POST"])
 def place_hold(lib_name, username):
     library_collection = db[lib_name]
     if request.method == "POST":
         title = request.form.get("title")
-        username = request.form.get("username", username)      
         if title:
             clean_title = title.strip()
+            # Push the user into the on_hold_by list queue instead of overwriting
             library_collection.update_one(
                 {"title": {"$regex": f"^{clean_title}$", "$options": "i"}},
                 {
-                    "$set": {
-                        "currently_reading": "No",
-                        "checked_out_by": "None",
-                        "on_hold_by": username,
-                        "return_to": username
-                    }
+                    "$push": {"on_hold_by": username}
                 }
             )
         return redirect(url_for('test', lib_name=lib_name, username=username))
     return render_template("place_hold.html", lib_name=lib_name, username=username)
+
 @app.route("/library/<lib_name>/<username>/update_checkout/<book_id>", methods=["GET", "POST"])
 def update_checkout(lib_name, username, book_id):
     library_collection = db[lib_name]
@@ -217,52 +237,34 @@ def promote_hold(lib_name, username, book_id):
     library_collection = db[lib_name]
     book = library_collection.find_one({"_id": ObjectId(book_id)})
     
-    if book and book.get("on_hold_by") and book.get("on_hold_by") != "None":
-        next_borrower = book.get("on_hold_by")
-        library_collection.update_one(
-            {"_id": ObjectId(book_id)},
-            {
-                "$set": {
-                    "checked_out_by": next_borrower,
-                    "return_to": next_borrower,
-                    "on_hold_by": "None"
+    if book and book.get("on_hold_by"):
+        holds = book.get("on_hold_by")
+        # If stored as a list queue, shift the first person out
+        if isinstance(holds, list) and len(holds) > 0:
+            next_borrower = holds[0]
+            remaining_holds = holds[1:] if len(holds) > 1 else "None"
+            library_collection.update_one(
+                {"_id": ObjectId(book_id)},
+                {
+                    "$set": {
+                        "checked_out_by": next_borrower,
+                        "return_to": next_borrower,
+                        "on_hold_by": remaining_holds
+                    }
                 }
-            }
-        )
+            )
+        elif isinstance(holds, str) and holds != "None":
+            library_collection.update_one(
+                {"_id": ObjectId(book_id)},
+                {
+                    "$set": {
+                        "checked_out_by": holds,
+                        "return_to": holds,
+                        "on_hold_by": "None"
+                    }
+                }
+            )
     return redirect(url_for('test', lib_name=lib_name, username=username))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(debug=True)
