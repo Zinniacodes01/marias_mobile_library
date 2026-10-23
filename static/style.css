@@ -5,7 +5,7 @@ body {
     color:white
 }
 .doodlebackground {
-    background-color: #0b6623 !important; /* A much richer, deeper green */
+    background-color: #008000ff !important;
     background-image: url('/static/images/whatsapp_doodles.png');
     background-repeat: repeat;
     background-size: 180px;
