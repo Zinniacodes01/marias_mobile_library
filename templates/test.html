@@ -66,20 +66,14 @@
                                     <th scope="row">{{ loop.index }}</th>
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
-                                    
-                                    <!-- Currently Reading & Change Button -->
                                     <td>{{ book.currently_reading if book.currently_reading else 'No' }}</td>
                                     <td>
                                         <a href="{{ url_for('update_currently_reading', lib_name=lib_name, username=username, book_id=book._id) }}" class="btn btn-sm btn-outline-light">Change</a>
                                     </td>
-        
-                                    <!-- Checked Out By & Change Button -->
                                     <td>{{ book.checked_out_by if book.checked_out_by else 'None' }}</td>
                                     <td>
                                         <a href="{{ url_for('update_checkout', lib_name=lib_name, username=username, book_id=book._id) }}" class="btn btn-sm btn-outline-light">Change</a>
                                     </td>
-        
-                                    <!-- On Hold By (Displays active hold + queue list + Issue button) -->
                                     <td>
                                         {% if book.on_hold_by and book.on_hold_by != "None" %}
                                             {% if book.on_hold_by is iterable and book.on_hold_by is not string %}
@@ -98,15 +92,12 @@
                                             None
                                         {% endif %}
                                     </td>
-        
-                                    <!-- Due Date & Calculated Late Fee ($1 every 2 days) -->
                                     <td>
                                         {{ book.due_date if book.due_date else 'No Due Date' }}
                                         {% if book.calculated_late_fee and book.calculated_late_fee > 0 %}
                                             <br><span class="badge bg-danger mt-1">Late Fee: ${{ book.calculated_late_fee }}</span>
                                         {% endif %}
                                     </td>
-        
                                     <td>{{ book.return_to if book.return_to else 'None' }}</td>
                                 </tr>
                                 {% endfor %}
