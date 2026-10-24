@@ -185,15 +185,13 @@ def add_entry(lib_name, username):
 def place_hold(lib_name, username):
     library_collection = db[lib_name]
     if request.method == "POST":
-        title = request.form.get("title")
-        if title:
-            clean_title = title.strip()
-            # Find the book case-insensitively
-            book = library_collection.find_one({"title": {"$regex": f"^{clean_title}$", "$options": "i"}})
+        book_id = request.form.get("book_id")
+        if book_id:
+            book = library_collection.find_one({"_id": ObjectId(book_id)})
             if book:
                 current_holds = book.get("on_hold_by", "None")
                 
-                # Safely convert to a Python list queue
+                # Safely convert or initialize the queue list
                 if not isinstance(current_holds, list):
                     if current_holds and current_holds != "None":
                         holds_list = [current_holds, username]
@@ -204,13 +202,16 @@ def place_hold(lib_name, username):
                     if username not in holds_list:
                         holds_list.append(username)
                 
-                # Update the database with the proper list array
+                # Update MongoDB securely using the unique _id
                 library_collection.update_one(
-                    {"_id": book["_id"]},
+                    {"_id": ObjectId(book_id)},
                     {"$set": {"on_hold_by": holds_list}}
                 )
         return redirect(url_for('test', lib_name=lib_name, username=username))
-    return render_template("place_hold.html", lib_name=lib_name, username=username)
+    
+    # Fetch all books for the dropdown selection
+    books = list(library_collection.find({"title": {"$exists": True}}))
+    return render_template("place_hold.html", books=books, lib_name=lib_name, username=username)
     
 @app.route("/library/<lib_name>/<username>/update_checkout/<book_id>", methods=["GET", "POST"])
 def update_checkout(lib_name, username, book_id):
