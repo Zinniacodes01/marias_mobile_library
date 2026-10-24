@@ -188,16 +188,30 @@ def place_hold(lib_name, username):
         title = request.form.get("title")
         if title:
             clean_title = title.strip()
-            # Push the user into the on_hold_by list queue instead of overwriting
-            library_collection.update_one(
-                {"title": {"$regex": f"^{clean_title}$", "$options": "i"}},
-                {
-                    "$push": {"on_hold_by": username}
-                }
-            )
+            # Find the book case-insensitively
+            book = library_collection.find_one({"title": {"$regex": f"^{clean_title}$", "$options": "i"}})
+            if book:
+                current_holds = book.get("on_hold_by", "None")
+                
+                # Safely convert to a Python list queue
+                if not isinstance(current_holds, list):
+                    if current_holds and current_holds != "None":
+                        holds_list = [current_holds, username]
+                    else:
+                        holds_list = [username]
+                else:
+                    holds_list = current_holds
+                    if username not in holds_list:
+                        holds_list.append(username)
+                
+                # Update the database with the proper list array
+                library_collection.update_one(
+                    {"_id": book["_id"]},
+                    {"$set": {"on_hold_by": holds_list}}
+                )
         return redirect(url_for('test', lib_name=lib_name, username=username))
     return render_template("place_hold.html", lib_name=lib_name, username=username)
-
+    
 @app.route("/library/<lib_name>/<username>/update_checkout/<book_id>", methods=["GET", "POST"])
 def update_checkout(lib_name, username, book_id):
     library_collection = db[lib_name]
