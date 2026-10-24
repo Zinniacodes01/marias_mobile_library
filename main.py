@@ -254,6 +254,7 @@ def promote_hold(lib_name, username, book_id):
                 }
             )
         elif isinstance(holds, str) and holds != "None":
+            # Fallback if hold was stored as a single string name
             library_collection.update_one(
                 {"_id": ObjectId(book_id)},
                 {
