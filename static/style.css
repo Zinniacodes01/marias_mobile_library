@@ -19,17 +19,19 @@ nav {
     color: #ffffff;
 }
 
+/* Sandy background for inputs and select boxes */
 input.form-control, select.form-select {
-    background-color: #1b4f72;
-    color: #ffffff;
-    border: 1px solid #4e6d8c;
+    background-color: #DEA97D;
+    color: #2c3e50;
+    border: 1px solid #c98e5e;
     padding: 8px 12px;
     border-radius: 15px;
     width: 100%;
+    font-weight: bold;
 }
 
 input::placeholder {
-    color: #a0aec0;
+    color: #555555;
 }
 
 button, .btn-success {
