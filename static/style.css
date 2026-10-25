@@ -11,7 +11,6 @@ nav {
     padding: 10px;
 }
 
-/* Rounded corners for the container card */
 .card {
     background-color: #34495e;
     border-radius: 15px;
@@ -33,7 +32,6 @@ input::placeholder {
     color: #a0aec0;
 }
 
-/* Rounded corners for buttons */
 button, .btn-success {
     background-color: #DEA97D;
     color: #ffffff;
