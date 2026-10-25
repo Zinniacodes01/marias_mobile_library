@@ -143,6 +143,10 @@ def test(lib_name, username):
     now = datetime.now()
 
     for book in books_cursor:
+        holds = book.get("on_hold_by")
+        if not holds or holds == "None":
+            book["on_hold_by"] = "None"
+
         due_date_str = book.get("due_date")
         late_fee = 0
         if due_date_str:
