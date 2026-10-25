@@ -58,6 +58,14 @@ th, td {
     border-bottom: 1px solid #4e6d8c;
     color: #ffffff;
 }
+input, select {
+    background-color: #1b4f72;
+    color: #ffffff;
+    border: 1px solid #4e6d8c;
+    padding: 8px 12px;
+    border-radius: 15px; /* This controls how round the corners are! */
+    width: 100%;
+}
 
 .indie-flower-regular {
     font-family: "Indie Flower", cursive;
