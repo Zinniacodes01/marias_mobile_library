@@ -1,17 +1,58 @@
-html,
 body {
-    height: 100%;
-    font-family: "Indie Flower", cursive !important;
-    color:white
-}
-.doodlebackground {
-    background-color: #008000ff !important;
-    background-image: url('/static/images/whatsapp_doodles.png');
-    background-repeat: repeat;
-    background-size: 180px;
-    background-blend-mode: overlay;
+    background-color: #0b6623 !important;
+    color: #ffffff !important;
+    margin: 0;
+    min-height: 100vh;
 }
 
-.blue-header {
-    background-color: #1b4f72 !important;
+.card {
+    background-color: #34495e !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+input.form-control, select.form-select {
+    background-color: #2c3e50 !important;
+    color: #ffffff !important;
+    border: 1px solid #4e6d8c !important;
+    border-radius: 0.5rem !important;
+}
+
+input.form-control:focus, select.form-select:focus {
+    background-color: #2c3e50 !important;
+    color: #ffffff !important;
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.4);
+}
+
+/* Global Buttons */
+.btn-success {
+    background-color: #27ae60 !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background-color: #219653 !important;
+}
+.table {
+    color: #ffffff !important;
+    --bs-table-bg: #34495e !important;
+    --bs-table-color: #fff !important;
+    border-color: #4e6d8c !important;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+@media (max-width: 768px) {
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .card.p-4 {
+        padding: 1.25rem !important;
+    }
 }
