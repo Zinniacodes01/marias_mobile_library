@@ -1,5 +1,5 @@
 /* static/style.css */
-@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
 body {
     background-color: #2c3e50;
     color: #ffffff;
@@ -11,20 +11,21 @@ nav {
     padding: 10px;
 }
 
+/* Rounded corners for the container card */
 .card {
     background-color: #34495e;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 20px;
     margin: 20px auto;
     color: #ffffff;
 }
 
-input, select {
+input.form-control, select.form-select {
     background-color: #1b4f72;
     color: #ffffff;
     border: 1px solid #4e6d8c;
-    padding: 8px;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border-radius: 15px;
     width: 100%;
 }
 
@@ -32,12 +33,13 @@ input::placeholder {
     color: #a0aec0;
 }
 
+/* Rounded corners for buttons */
 button, .btn-success {
     background-color: #DEA97D;
     color: #ffffff;
     border: none;
     padding: 8px 15px;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
 }
 
@@ -57,14 +59,6 @@ th, td {
     text-align: left;
     border-bottom: 1px solid #4e6d8c;
     color: #ffffff;
-}
-input.form-control, select.form-select {
-    background-color: #1b4f72;
-    color: #ffffff;
-    border: 1px solid #4e6d8c;
-    padding: 8px 12px;
-    border-radius: 15px;
-    width: 100%;
 }
 
 .indie-flower-regular {
