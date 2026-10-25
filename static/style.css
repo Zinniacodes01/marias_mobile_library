@@ -32,7 +32,6 @@ input::placeholder {
     color: #a0aec0;
 }
 
-/* Minimal beach accent for buttons */
 button, .btn-success {
     background-color: #DEA97D;
     color: #ffffff;
