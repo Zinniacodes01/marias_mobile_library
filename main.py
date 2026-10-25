@@ -270,7 +270,6 @@ def promote_hold(lib_name, username, book_id):
                 {
                     "$set": {
                         "checked_out_by": next_borrower,
-                        "return_to": next_borrower,
                         "on_hold_by": remaining_holds
                     }
                 }
