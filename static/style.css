@@ -6,16 +6,20 @@ body {
     margin: 0;
 }
 
+/* Distinct Navbar Header with contrast, a sandy bottom border, and shadow */
 nav {
     background-color: #1b4f72;
-    padding: 10px;
+    padding: 15px 25px;
+    border-bottom: 3px solid #DEA97D;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Force rounded corners on the card */
 .card {
     background-color: #34495e;
-    border-radius: 20px !important
-    padding: 20px;
-    margin: 20px auto;
+    border-radius: 20px !important;
+    padding: 25px;
+    margin: 30px auto;
     color: #ffffff;
 }
 
@@ -24,8 +28,8 @@ input.form-control, select.form-select {
     background-color: #DEA97D;
     color: #2c3e50;
     border: 1px solid #c98e5e;
-    padding: 8px 12px;
-    border-radius: 15px;
+    padding: 10px 14px;
+    border-radius: 15px !important;
     width: 100%;
     font-weight: bold;
 }
@@ -34,16 +38,18 @@ input::placeholder {
     color: #555555;
 }
 
-button, .btn-success {
+/* Force rounded corners on buttons */
+button, .btn, .btn-success {
     background-color: #DEA97D;
     color: #ffffff;
     border: none;
-    padding: 8px 15px;
-    border-radius: 15px;
+    padding: 8px 18px;
+    border-radius: 15px !important;
     cursor: pointer;
+    font-weight: bold;
 }
 
-button:hover, .btn-success:hover {
+button:hover, .btn:hover, .btn-success:hover {
     background-color: #c98e5e;
 }
 
