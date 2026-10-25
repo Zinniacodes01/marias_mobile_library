@@ -13,7 +13,7 @@ nav {
 
 .card {
     background-color: #34495e;
-    border-radius: 15px;
+    border-radius: 20px !important
     padding: 20px;
     margin: 20px auto;
     color: #ffffff;
