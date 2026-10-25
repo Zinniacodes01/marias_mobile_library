@@ -234,7 +234,6 @@ def update_checkout(lib_name, username, book_id):
                     "$set": {
                         "checked_out_by": new_user,
                         "currently_reading": "Yes" if new_user.lower() != "none" else "No",
-                        "return_to": new_user
                     }
                 }
             )
