@@ -21,8 +21,11 @@
                 <a class="navbar-brand text-white" href="{{ url_for('login',lib_name=lib_name, username=username) }}">
                     <img src="{{ url_for('static', filename='images/book1.jpg') }}" alt="Bootstrap" width="50"
                         height="45" class="rounded-circle text-white">
-                    Maria's Mobile Library                                        {{username}}
+                    Maria's Mobile Library
                 </a>
+                <span class="text-white fw-semibold fs-6">
+                    {{ username }}
+                </span>
             </div>
         </nav>
         <div class="container-fluid doodle-background">
