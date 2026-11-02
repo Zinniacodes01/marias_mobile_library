@@ -6,4 +6,4 @@ To get started, visit
 marias-mobile-library.onrender.com
 
 Happy reading!
-For updates and other stuff see the wiki-it's a work in progress so pardon our dust! :)
+For updates and other stuff see the discussions and the wiki-it's a work in progress so pardon our dust! :)
